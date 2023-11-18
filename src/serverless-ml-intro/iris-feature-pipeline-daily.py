@@ -1,9 +1,9 @@
 import os
 import modal
 
-LOCAL=False
+BACKFILL=True
 
-if LOCAL == False:
+if BACKFILL == True:
    stub = modal.Stub("iris_daily")
    image = modal.Image.debian_slim().pip_install(["hopsworks"]) 
 
@@ -68,7 +68,7 @@ def g():
     iris_fg.insert(iris_df)
 
 if __name__ == "__main__":
-    if LOCAL == True :
+    if BACKFILL == False :
         g()
     else:
         stub.deploy("iris_daily")

@@ -26,6 +26,6 @@ jobs:
         env: 
           HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
           
-          run: chmod +x ./src/serverless-ml-intro/serverless-ml-lab/run-wine-daily.sh && ./src/serverless-ml-intro/serverless-ml-lab/run-wine-daily.sh
+        run: chmod +x ./src/serverless-ml-intro/serverless-ml-lab/run-wine-daily.sh && ./src/serverless-ml-intro/serverless-ml-lab/run-wine-daily.sh
 
 

@@ -1,7 +1,7 @@
 import os
 import modal
 
-BACKFILL=True
+BACKFILL=False
 
 if BACKFILL == True:
    stub = modal.Stub("iris_daily")

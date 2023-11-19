@@ -34,6 +34,9 @@ def g():
     feature_view = fs.get_feature_view(name="iris", version=1)
     batch_data = feature_view.get_batch_data()
     
+    print("batch data")
+    print(batch_data)
+
     y_pred = model.predict(batch_data)
     #print(y_pred)
     offset = 1
@@ -47,7 +50,8 @@ def g():
    
     iris_fg = fs.get_feature_group(name="iris", version=1)
     df = iris_fg.read() 
-    #print(df)
+    print("feature group")
+    print(df)
     label = df.iloc[-offset]["variety"]
     label_url = "https://raw.githubusercontent.com/featurestoreorg/serverless-ml-course/main/src/01-module/assets/" + label + ".png"
     print("Flower actual: " + label)

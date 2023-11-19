@@ -24,23 +24,36 @@ def g():
     
     
 
-    feature_view = fs.get_feature_view(name="wine", version=1)
-    batch_data = feature_view.get_batch_data()
-
-    y_pred = model.predict(batch_data)
-    #print(y_pred)
-    offset = 1
-    predicted_wine = y_pred[-1]
-    dataset_api = project.get_dataset_api()
-    dataset_api.upload("./latest_iris.png", "Resources/images", overwrite=True)
-
-    
     wine_fg = fs.get_feature_group(name="wine", version=2)
     wine_df = wine_fg.read() 
-   
-    label = wine_df.iloc[-offset]["quality"]
 
+
+    wine_df_withoutQ = wine_df.drop('quality', axis=1)
+
+    row_to_predict = wine_df_withoutQ.iloc[-1]
+
+    print(row_to_predict)
+    y_pred = model.predict([row_to_predict])
+    #print(y_pred)
+    offset = 1
+    predicted_wine = y_pred[0]
+    predicted_wine_url = "https://raw.githubusercontent.com/rogoran/id2223kth.github.io/master/src/serverless-ml-intro/serverless-ml-lab/wine_images/wine-" + str(predicted_wine) + ".png"
+    print("Wine predicted: " + str(predicted_wine))
+    img = Image.open(requests.get(predicted_wine_url, stream=True).raw)            
+    img.save("./latest_predicted_wine.png")
+
+    dataset_api = project.get_dataset_api()    
+    dataset_api.upload("./latest_predicted_wine.png", "Resources/images", overwrite=True)
+   
+    correct_label = wine_df.iloc[-offset]["quality"]
     
+    correct_label_url = "https://raw.githubusercontent.com/rogoran/id2223kth.github.io/master/src/serverless-ml-intro/serverless-ml-lab/wine_images/wine-" + str(correct_label) + ".png"
+    print("Wine actual: " + str(correct_label))
+    img = Image.open(requests.get(correct_label_url, stream=True).raw)            
+    img.save("./actual_wine.png")
+    dataset_api.upload("./actual_wine.png", "Resources/images", overwrite=True)
+    
+
     monitor_fg = fs.get_or_create_feature_group(name="wine_predictions",
                                                 version=1,
                                                 primary_key=["datetime"],
@@ -51,7 +64,7 @@ def g():
 
     data = {
         'prediction': [predicted_wine],
-        'label': [label],
+        'label': [correct_label],
         'datetime': [now],
        }
     
@@ -67,13 +80,13 @@ def g():
     df_recent = history_df.tail(4)
 
     dfi.export(df_recent, './df_recent.png', table_conversion = 'matplotlib')
+    dataset_api.upload("./df_recent.png", "Resources/images", overwrite=True)
     
     predictions = history_df[['prediction']]
     labels = history_df[['label']]
 
-    print(f"Prediction: {predicted_wine}\nActual label: {label}")
+    print(f"Prediction: {predicted_wine}\nActual label: {correct_label}")
    
-    # Only create the confusion matrix when our iris_predictions feature group has examples of all 3 iris flowers
     print("Number of different wine quality predictions to date: " + str(predictions.value_counts().count()))
     
 
@@ -91,7 +104,7 @@ def g():
         dataset_api.upload("./confusion_matrix.png", "Resources/images", overwrite=True)
     else:
         print("You need 7 different predictions to create the confusion matrix.")
-        print("Run the batch inference pipeline more times until you get 3 different iris flower predictions") 
+        print("Run the batch inference pipeline more times until you get 7 different wine predictions") 
 
 
 if __name__ == "__main__":

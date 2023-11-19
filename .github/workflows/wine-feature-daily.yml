@@ -25,6 +25,6 @@ jobs:
       - name: execute python workflows from bash script
         env: 
           HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
-        run: ./src/serverless-ml-intro/serverless-ml-lab/run-wine-daily.sh
+        run: ../src/serverless-ml-intro/serverless-ml-lab/run-wine-daily.sh
 
 

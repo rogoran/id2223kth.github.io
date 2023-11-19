@@ -27,4 +27,3 @@ jobs:
           HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
         run: ./src/serverless-ml-intro/serverless-ml-lab/run-wine-daily.sh
 
-

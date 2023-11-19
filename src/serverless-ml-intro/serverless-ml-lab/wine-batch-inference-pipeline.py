@@ -31,7 +31,10 @@ def g():
     #print(y_pred)
     offset = 1
     predicted_wine = y_pred[-1]
+    dataset_api = project.get_dataset_api()
+    dataset_api.upload("./latest_iris.png", "Resources/images", overwrite=True)
 
+    
     wine_fg = fs.get_feature_group(name="wine", version=2)
     wine_df = wine_fg.read() 
    

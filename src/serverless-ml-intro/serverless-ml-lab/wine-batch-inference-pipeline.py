@@ -20,7 +20,7 @@ def g():
     mr = project.get_model_registry()
     model = mr.get_model("wine_model_randomforest", version=1)
     model_dir = model.download()
-    model = joblib.load(model_dir + "/wine_model_randomforest.pkl")
+    model = joblib.load(model_dir + "/wine_model.pkl")
     
     
 

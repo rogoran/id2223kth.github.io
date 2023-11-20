@@ -18,13 +18,13 @@ def g():
     fs = project.get_feature_store()
     
     mr = project.get_model_registry()
-    model = mr.get_model("wine_model", version=1)
+    model = mr.get_model("wine_model_randomforest", version=1)
     model_dir = model.download()
-    model = joblib.load(model_dir + "/wine_model.pkl")
+    model = joblib.load(model_dir + "/wine_model_randomforest.pkl")
     
     
 
-    wine_fg = fs.get_feature_group(name="wine", version=2)
+    wine_fg = fs.get_feature_group(name="winedataset", version=1)
     wine_df = wine_fg.read() 
 
 
